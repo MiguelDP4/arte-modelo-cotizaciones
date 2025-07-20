@@ -19,6 +19,7 @@ function setCookie(name, value, days) {
 }
 
 let cliente = null;
+let moneda = "Q";
 
 const btnGuardarCliente = document.getElementById("btn-guardar-cliente");
 const spanNombre = document.getElementById("nombre-cliente");
@@ -88,8 +89,8 @@ function renderizarTabla() {
     row.innerHTML = `
       <td>${producto.nombre}</td>
       <td>${producto.cantidad}</td>
-      <td>Q${producto.precio.toFixed(2)}</td>
-      <td>Q${producto.total.toFixed(2)}</td>
+      <td>${moneda}${producto.precio.toFixed(2)}</td>
+      <td>${moneda}${producto.total.toFixed(2)}</td>
       <td>
         <div class="acciones">
           <button class="btn-editar" onclick="editarProducto(${index})">✏️</button>
@@ -106,7 +107,7 @@ function renderizarTabla() {
 
 function actualizarTotal() {
   const total = productos.reduce((sum, p) => sum + p.total, 0);
-  grandTotalCell.textContent = `Q${total.toFixed(2)}`;
+  grandTotalCell.textContent = `${moneda}${total.toFixed(2)}`;
 }
 
 function editarProducto(index) {
@@ -121,7 +122,7 @@ function editarProducto(index) {
     <td><input type="number" value="${
       producto.precio
     }" min="0" step="0.01" id="edit-precio-${index}" /></td>
-    <td>Q${producto.total.toFixed(2)}</td>
+    <td>${moneda}${producto.total.toFixed(2)}</td>
     <td>
       <button onclick="guardarEdicion(${index})">Aceptar</button>
     </td>
@@ -163,6 +164,13 @@ cancelDeleteBtn.addEventListener("click", () => {
   productoAEliminar = null;
   deleteModal.style.display = "none";
 });
+
+function updateCurrency() {
+  const currencyTextField = document.getElementById("currency");
+  moneda = currencyTextField.value;
+  setCookie("moneda", JSON.stringify(moneda), 30);
+  renderizarTabla();
+}
 
 function exportarPDF() {
   const cotizacion = document.getElementById("cotizacion");
@@ -217,7 +225,6 @@ document.addEventListener("DOMContentLoaded", () => {
   fechaHoy.textContent = `${dia} de ${mes} de ${año}`;
 
   const cookieCliente = getCookie("cliente");
-  console.log(cookieCliente);
   if (cookieCliente) {
     cliente = JSON.parse(cookieCliente);
     spanNombre.textContent = cliente.nombre;
@@ -228,12 +235,21 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   const cookieProductos = getCookie("productos");
-  console.log(cookieProductos);
   if (cookieProductos) {
     productos = JSON.parse(cookieProductos);
     renderizarTabla();
     form.reset();
   }
+
+  const cookieMoneda = getCookie("moneda");
+  if (cookieMoneda) {
+    moneda = JSON.parse(cookieMoneda);
+    renderizarTabla();
+  } else {
+    moneda = "Q";
+  }
+  const currencyTextField = document.getElementById("currency");
+  currencyTextField.value = moneda;
 });
 
 function abrirModal(id) {
