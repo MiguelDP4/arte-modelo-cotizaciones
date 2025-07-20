@@ -3,21 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Product Quotation</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Cotizainador</title>
 </head>
 <body>
-    <div class="quotation-container">
-        <img src="../fondo.png" alt="Background" class="background-image">
-        <h1>Product Quotation</h1>
-        <div class="product-details">
-            <p>Product Name: <span id="product-name"></span></p>
-            <p>Quantity: <span id="quantity"></span></p>
-            <p>Price: <span id="price"></span></p>
-            <p>Total: <span id="total"></span></p>
-        </div>
-        <button id="generate-pdf">Generate PDF</button>
-    </div>
-    <script src="script.js"></script>
+    <h1>Cotizainador</h1>
+    <input type="text" id="nombre-producto" placeholder="Nombre del producto" />
+    <input type="number" id="cantidad" placeholder="Cantidad" />
+    <input type="number" id="precio" placeholder="Precio unitario" />
+    <button
+        id="agregar-producto"
+        onclick="agregarProducto()"
+    >Agregar Producto</button>
 </body>
 </html>
