@@ -15,7 +15,7 @@
       <label>Teléfono: <input type="text" id="c-telefono" /></label>
       <label>NIT: <input type="text" id="c-nit" /></label>
       <button id="btn-guardar-cliente">Guardar cliente</button>
-      <h2>Agregar productos</h2>
+      <button id="btn-borrar-cliente">Borrar cliente</button>
       <p id="cliente-confirmado" style="display: none">
         Cliente: <span id="c-nombre"></span>, Tel:
         <span id="c-telefono"></span>, NIT: <span id="c-nit"></span>
@@ -24,6 +24,7 @@
 
     <!-- Luego va tu formulario de productos -->
 
+    <h2>Agregar productos</h2>
     <form id="product-form">
       <label>
         Producto:
@@ -38,9 +39,28 @@
         <input type="number" id="product-price" step="0.01" min="0" required />
       </label>
       <button type="submit">Agregar producto</button>
+      <button id="btn-borrar-todo">Borrar todo</button>
     </form>
     <br />
     <button onclick="exportarPDF()">Exportar a PDF</button>
+
+    <!-- Modal borrar cliente -->
+    <div id="modal-borrar-cliente" class="modal hidden">
+      <div class="modal-contenido">
+        <p>¿Seguro que quieres borrar los datos del cliente?</p>
+        <button id="confirmar-borrar-cliente">Sí, borrar</button>
+        <button onclick="cerrarModal('modal-borrar-cliente')">Cancelar</button>
+      </div>
+    </div>
+
+    <!-- Modal borrar todo -->
+    <div id="modal-borrar-todo" class="modal hidden">
+      <div class="modal-contenido">
+        <p>¿Seguro que quieres borrar todos los productos?</p>
+        <button id="confirmar-borrar-todo">Sí, borrar todo</button>
+        <button onclick="cerrarModal('modal-borrar-todo')">Cancelar</button>
+      </div>
+    </div>
 
     <h2>Productos agregados</h2>
     <div id="cotizacion">

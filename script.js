@@ -1,4 +1,3 @@
-// Al inicio de script.js, antes de form listener:
 let cliente = null;
 
 const btnGuardarCliente = document.getElementById("btn-guardar-cliente");
@@ -18,12 +17,10 @@ btnGuardarCliente.addEventListener("click", () => {
 
   cliente = { nombre, telefono, nit };
 
-  // Mostrar datos en la cotización
   spanNombre.textContent = nombre;
   spanTelefono.textContent = telefono;
   spanNit.textContent = nit;
 
-  // Hacer visible el bloque en la cotización
   divDatosCliente.style.display = "block";
 });
 
@@ -197,3 +194,41 @@ document.addEventListener("DOMContentLoaded", () => {
 
   fechaHoy.textContent = `${dia} de ${mes} de ${año}`;
 });
+
+function abrirModal(id) {
+  document.getElementById(id).classList.remove("hidden");
+}
+
+function cerrarModal(id) {
+  document.getElementById(id).classList.add("hidden");
+}
+
+document.getElementById("btn-borrar-cliente").addEventListener("click", () => {
+  abrirModal("modal-borrar-cliente");
+});
+
+document.getElementById("btn-borrar-todo").addEventListener("click", () => {
+  abrirModal("modal-borrar-todo");
+});
+
+document
+  .getElementById("confirmar-borrar-cliente")
+  .addEventListener("click", () => {
+    cliente = null;
+
+    spanNombre.textContent = "";
+    spanTelefono.textContent = "";
+    spanNit.textContent = "";
+
+    divDatosCliente.style.display = "none";
+
+    cerrarModal("modal-borrar-cliente");
+  });
+
+document
+  .getElementById("confirmar-borrar-todo")
+  .addEventListener("click", () => {
+    productos = [];
+    renderizarTabla();
+    cerrarModal("modal-borrar-todo");
+  });
