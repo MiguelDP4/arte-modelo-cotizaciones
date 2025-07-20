@@ -118,3 +118,17 @@ function exportarPDF() {
 
   html2pdf().set(opciones).from(cotizacion).save();
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+  const fechaHoy = document.getElementById('fecha-hoy');
+  const meses = [
+    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
+    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+  ];
+  const hoy = new Date();
+  const dia = hoy.getDate();
+  const mes = meses[hoy.getMonth()];
+  const año = hoy.getFullYear();
+
+  fechaHoy.textContent = `${dia} de ${mes} de ${año}`;
+});

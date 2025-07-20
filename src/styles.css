@@ -1,25 +1,58 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: Helvetica, Arial, sans-serif;
 }
 
 table, th, td {
-  border: 1px solid black;
   border-collapse: collapse;
   padding: 6px;
 }
 
 th {
-  background-color: #f2f2f2;
+  background-color: transparent;
+}
+
+table {
+  thead {
+    th {
+      text-align: left;
+    }
+  }
+  tfoot{
+    td:first-child {
+      text-align: right;
+    }
+    td:last-child {
+      text-align: left;
+    }
+  }
 }
 
 #cotizacion {
+  text-align: center;
+  width:816px;
+  height: 1056px;
+  margin: 0 auto;
   background-image: url('./fondo.png');
-  background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
-  padding: 50px;
-  min-height: 1000px;
+  background-size: 100% auto;  /* Ajusta al ancho, alto automático */
+  background-position: top center;
+  padding: 2rem;
   box-sizing: border-box;
+  #product-table {
+    margin: 0 auto;
+  }
+  subtitle {
+    font-size: 1.5rem;
+    color: #333;
+    margin-top: 0.5rem;
+    font-weight: bold;
+  }
+  p {
+    font-size: 1rem;
+    color: #333;
+    margin: 0.5rem 0;
+    font-weight: 400;
+  }
 }
 
 #delete-modal {

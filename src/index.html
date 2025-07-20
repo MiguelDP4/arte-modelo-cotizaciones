@@ -22,10 +22,21 @@
       <input type="number" id="product-price" step="0.01" min="0" required>
     </label>
     <button type="submit">Agregar producto</button>
+    <button onclick="exportarPDF()">Exportar a PDF</button>
   </form>
 
   <h2>Productos agregados</h2>
   <div id="cotizacion">
+    <h2>ARTE MODELO DUBOIS OFICIAL</h2>
+    <subtitle>Cotización</subtitle>
+    <p>Fecha: <span id="fecha-hoy"></span></p>
+    <p>Contacto: <span id="contacto">Arte Modelo Dubois Oficial</span></p>
+    <p>Teléfono: <span id="telefono">56888462 / 47078909</span></p>
+    <p>Correo: <span id="correo">artemodelodubois@hotmail.com</span></p>
+    <p>Cliente: <span id="cliente"></span></p>
+    <p>Número: <span id="numero-cliente"></span></p>
+    <p>NIT: <span id="nit-cliente"></span></p>
+
     <table id="product-table">
       <thead>
         <tr>
@@ -45,7 +56,6 @@
         </tr>
       </tfoot>
     </table>
-    <button onclick="exportarPDF()">Exportar a PDF</button>
   </div>
 
   <!-- Modal para confirmación de eliminación -->
