@@ -1,3 +1,23 @@
+function getCookie(name) {
+  const cookies = document.cookie.split("; ");
+  for (const cookie of cookies) {
+    const [key, val] = cookie.split("=");
+    if (key === name) {
+      return decodeURIComponent(val);
+    }
+  }
+  return null;
+}
+
+function setCookie(name, value, days) {
+  const expires = new Date(
+    Date.now() + days * 24 * 60 * 60 * 1000
+  ).toUTCString();
+  document.cookie = `${name}=${encodeURIComponent(
+    value
+  )}; expires=${expires}; path=/`;
+}
+
 let cliente = null;
 
 const btnGuardarCliente = document.getElementById("btn-guardar-cliente");
@@ -16,6 +36,7 @@ btnGuardarCliente.addEventListener("click", () => {
   }
 
   cliente = { nombre, telefono, nit };
+  setCookie("cliente", JSON.stringify(cliente), 30);
 
   spanNombre.textContent = nombre;
   spanTelefono.textContent = telefono;
@@ -53,6 +74,7 @@ form.addEventListener("submit", function (event) {
   };
 
   productos.push(producto);
+  setCookie("productos", JSON.stringify(productos), 30);
   renderizarTabla();
   form.reset();
   document.getElementById("product-name").focus();
@@ -193,6 +215,25 @@ document.addEventListener("DOMContentLoaded", () => {
   const año = hoy.getFullYear();
 
   fechaHoy.textContent = `${dia} de ${mes} de ${año}`;
+
+  const cookieCliente = getCookie("cliente");
+  console.log(cookieCliente);
+  if (cookieCliente) {
+    cliente = JSON.parse(cookieCliente);
+    spanNombre.textContent = cliente.nombre;
+    spanTelefono.textContent = cliente.telefono;
+    spanNit.textContent = cliente.nit;
+
+    divDatosCliente.style.display = "block";
+  }
+
+  const cookieProductos = getCookie("productos");
+  console.log(cookieProductos);
+  if (cookieProductos) {
+    productos = JSON.parse(cookieProductos);
+    renderizarTabla();
+    form.reset();
+  }
 });
 
 function abrirModal(id) {
