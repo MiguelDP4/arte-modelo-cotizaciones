@@ -58,6 +58,7 @@ form.addEventListener("submit", function (event) {
   productos.push(producto);
   renderizarTabla();
   form.reset();
+  document.getElementById("product-name").focus();
 });
 
 function renderizarTabla() {
@@ -71,8 +72,10 @@ function renderizarTabla() {
       <td>Q${producto.precio.toFixed(2)}</td>
       <td>Q${producto.total.toFixed(2)}</td>
       <td>
-        <button onclick="editarProducto(${index})">✏️</button>
-        <button onclick="mostrarModalEliminar(${index})">🗑️</button>
+        <div class="acciones">
+          <button class="btn-editar" onclick="editarProducto(${index})">✏️</button>
+          <button class="btn-eliminar" onclick="mostrarModalEliminar(${index})">🗑️</button>
+        </div>
       </td>
     `;
 
@@ -145,15 +148,30 @@ cancelDeleteBtn.addEventListener("click", () => {
 function exportarPDF() {
   const cotizacion = document.getElementById("cotizacion");
 
+  // Ocultar botones u otras acciones antes de exportar
+  const acciones = cotizacion.querySelectorAll(".acciones");
+  acciones.forEach((el) => (el.style.display = "none"));
+
   const opciones = {
     margin: 0,
     filename: "cotizacion.pdf",
     image: { type: "jpeg", quality: 0.98 },
     html2canvas: { scale: 2 },
-    jsPDF: { unit: "mm", format: "letter", orientation: "portrait" },
+    jsPDF: { unit: "in", format: "letter", orientation: "portrait" },
   };
 
-  html2pdf().set(opciones).from(cotizacion).save();
+  html2pdf()
+    .set(opciones)
+    .from(cotizacion)
+    .save()
+    .then(() => {
+      // Mostrar botones después de exportar
+      acciones.forEach((el) => (el.style.display = ""));
+    })
+    .catch((error) => {
+      console.error("Error al exportar a PDF:", error);
+      acciones.forEach((el) => (el.style.display = ""));
+    });
 }
 
 document.addEventListener("DOMContentLoaded", () => {
