@@ -1,73 +1,111 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <title>Cotizador</title>
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-  <h1>Cotizainador</h1>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Cotizador</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <h1>Cotizainador</h1>
 
-  <form id="product-form">
-    <label>
-      Producto:
-      <input type="text" id="product-name" required>
-    </label>
-    <label>
-      Cantidad:
-      <input type="number" id="product-qty" min="1" required>
-    </label>
-    <label>
-      Precio Unitario:
-      <input type="number" id="product-price" step="0.01" min="0" required>
-    </label>
-    <button type="submit">Agregar producto</button>
-    <button onclick="exportarPDF()">Exportar a PDF</button>
-  </form>
-
-  <h2>Productos agregados</h2>
-  <div id="cotizacion">
-    <h2>ARTE MODELO DUBOIS OFICIAL</h2>
-    <subtitle>Cotización</subtitle>
-    <p>Fecha: <span id="fecha-hoy"></span></p>
-    <p>Contacto: <span id="contacto">Arte Modelo Dubois Oficial</span></p>
-    <p>Teléfono: <span id="telefono">56888462 / 47078909</span></p>
-    <p>Correo: <span id="correo">artemodelodubois@hotmail.com</span></p>
-    <p>Cliente: <span id="cliente"></span></p>
-    <p>Número: <span id="numero-cliente"></span></p>
-    <p>NIT: <span id="nit-cliente"></span></p>
-
-    <table id="product-table">
-      <thead>
-        <tr>
-          <th>Producto</th>
-          <th>Cantidad</th>
-          <th>Precio Unitario</th>
-          <th>Total</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Aquí se agregan los productos -->
-      </tbody>
-      <tfoot>
-        <tr>
-          <td colspan="3"><strong>Total cotización</strong></td>
-          <td id="grand-total">Q0.00</td>
-        </tr>
-      </tfoot>
-    </table>
-  </div>
-
-  <!-- Modal para confirmación de eliminación -->
-  <div id="delete-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
-    <div style="background:white; padding:20px; margin:10% auto; width:300px; text-align:center; border-radius:8px;">
-      <p>¿Estás seguro de eliminar este producto?</p>
-      <button id="confirm-delete">Sí</button>
-      <button id="cancel-delete">No</button>
+    <!-- Formulario de cliente -->
+    <div id="cliente-info">
+      <h2>Datos del cliente</h2>
+      <label>Nombre: <input type="text" id="c-nombre" /></label>
+      <label>Teléfono: <input type="text" id="c-telefono" /></label>
+      <label>NIT: <input type="text" id="c-nit" /></label>
+      <button id="btn-guardar-cliente">Guardar cliente</button>
+      <h2>Agregar productos</h2>
+      <p id="cliente-confirmado" style="display: none">
+        Cliente: <span id="c-nombre"></span>, Tel:
+        <span id="c-telefono"></span>, NIT: <span id="c-nit"></span>
+      </p>
     </div>
-  </div>
-  <script src="script.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
-</body>
+    <!-- Luego va tu formulario de productos -->
+
+    <form id="product-form">
+      <label>
+        Producto:
+        <input type="text" id="product-name" required />
+      </label>
+      <label>
+        Cantidad:
+        <input type="number" id="product-qty" min="1" required />
+      </label>
+      <label>
+        Precio Unitario:
+        <input type="number" id="product-price" step="0.01" min="0" required />
+      </label>
+      <button type="submit">Agregar producto</button>
+    </form>
+    <br />
+    <button onclick="exportarPDF()">Exportar a PDF</button>
+
+    <h2>Productos agregados</h2>
+    <div id="cotizacion">
+      <h2>ARTE MODELO DUBOIS OFICIAL</h2>
+      <subtitle>Cotización</subtitle>
+      <p>Fecha: <span id="fecha-hoy"></span></p>
+      <p>Contacto: <span id="contacto">Arte Modelo Dubois Oficial</span></p>
+      <p>Teléfono: <span id="telefono">56888462 / 47078909</span></p>
+      <p>Correo: <span id="correo">artemodelodubois@hotmail.com</span></p>
+      <div id="datos-cliente" style="display: none">
+        <p>Cliente: <span id="nombre-cliente"></span></p>
+        <p>Teléfono: <span id="telefono-cliente"></span></p>
+        <p>NIT: <span id="nit-cliente"></span></p>
+      </div>
+
+      <table id="product-table">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th>Precio Unitario</th>
+            <th>Total</th>
+          </tr>
+        </thead>
+        <tbody>
+          <!-- Aquí se agregan los productos -->
+        </tbody>
+        <tfoot>
+          <tr>
+            <td colspan="3"><strong>Total cotización</strong></td>
+            <td id="grand-total">Q0.00</td>
+          </tr>
+        </tfoot>
+      </table>
+    </div>
+
+    <!-- Modal para confirmación de eliminación -->
+    <div
+      id="delete-modal"
+      style="
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+      "
+    >
+      <div
+        style="
+          background: white;
+          padding: 20px;
+          margin: 10% auto;
+          width: 300px;
+          text-align: center;
+          border-radius: 8px;
+        "
+      >
+        <p>¿Estás seguro de eliminar este producto?</p>
+        <button id="confirm-delete">Sí</button>
+        <button id="cancel-delete">No</button>
+      </div>
+    </div>
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  </body>
 </html>

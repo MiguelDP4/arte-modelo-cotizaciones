@@ -1,19 +1,48 @@
-const form = document.getElementById('product-form');
-const tableBody = document.querySelector('#product-table tbody');
-const grandTotalCell = document.getElementById('grand-total');
-const deleteModal = document.getElementById('delete-modal');
-const confirmDeleteBtn = document.getElementById('confirm-delete');
-const cancelDeleteBtn = document.getElementById('cancel-delete');
+// Al inicio de script.js, antes de form listener:
+let cliente = null;
+
+const btnGuardarCliente = document.getElementById("btn-guardar-cliente");
+const spanNombre = document.getElementById("nombre-cliente");
+const spanTelefono = document.getElementById("telefono-cliente");
+const spanNit = document.getElementById("nit-cliente");
+const divDatosCliente = document.getElementById("datos-cliente");
+
+btnGuardarCliente.addEventListener("click", () => {
+  const nombre = document.getElementById("c-nombre").value;
+  const telefono = document.getElementById("c-telefono").value;
+  const nit = document.getElementById("c-nit").value;
+  if (!nombre || !telefono || !nit) {
+    alert("Por favor completa todos los datos del cliente");
+    return;
+  }
+
+  cliente = { nombre, telefono, nit };
+
+  // Mostrar datos en la cotización
+  spanNombre.textContent = nombre;
+  spanTelefono.textContent = telefono;
+  spanNit.textContent = nit;
+
+  // Hacer visible el bloque en la cotización
+  divDatosCliente.style.display = "block";
+});
+
+const form = document.getElementById("product-form");
+const tableBody = document.querySelector("#product-table tbody");
+const grandTotalCell = document.getElementById("grand-total");
+const deleteModal = document.getElementById("delete-modal");
+const confirmDeleteBtn = document.getElementById("confirm-delete");
+const cancelDeleteBtn = document.getElementById("cancel-delete");
 
 let productos = [];
 let productoAEliminar = null;
 
-form.addEventListener('submit', function (event) {
+form.addEventListener("submit", function (event) {
   event.preventDefault();
 
-  const nombre = document.getElementById('product-name').value.trim();
-  const cantidad = parseInt(document.getElementById('product-qty').value);
-  const precio = parseFloat(document.getElementById('product-price').value);
+  const nombre = document.getElementById("product-name").value.trim();
+  const cantidad = parseInt(document.getElementById("product-qty").value);
+  const precio = parseFloat(document.getElementById("product-price").value);
 
   if (!nombre || cantidad <= 0 || precio < 0) return;
 
@@ -23,7 +52,7 @@ form.addEventListener('submit', function (event) {
     nombre,
     cantidad,
     precio,
-    total
+    total,
   };
 
   productos.push(producto);
@@ -32,9 +61,9 @@ form.addEventListener('submit', function (event) {
 });
 
 function renderizarTabla() {
-  tableBody.innerHTML = '';
+  tableBody.innerHTML = "";
   productos.forEach((producto, index) => {
-    const row = document.createElement('tr');
+    const row = document.createElement("tr");
 
     row.innerHTML = `
       <td>${producto.nombre}</td>
@@ -64,8 +93,12 @@ function editarProducto(index) {
 
   row.innerHTML = `
     <td><input value="${producto.nombre}" id="edit-nombre-${index}" /></td>
-    <td><input type="number" value="${producto.cantidad}" min="1" id="edit-cantidad-${index}" /></td>
-    <td><input type="number" value="${producto.precio}" min="0" step="0.01" id="edit-precio-${index}" /></td>
+    <td><input type="number" value="${
+      producto.cantidad
+    }" min="1" id="edit-cantidad-${index}" /></td>
+    <td><input type="number" value="${
+      producto.precio
+    }" min="0" step="0.01" id="edit-precio-${index}" /></td>
     <td>Q${producto.total.toFixed(2)}</td>
     <td>
       <button onclick="guardarEdicion(${index})">Aceptar</button>
@@ -75,8 +108,12 @@ function editarProducto(index) {
 
 function guardarEdicion(index) {
   const nombre = document.getElementById(`edit-nombre-${index}`).value.trim();
-  const cantidad = parseInt(document.getElementById(`edit-cantidad-${index}`).value);
-  const precio = parseFloat(document.getElementById(`edit-precio-${index}`).value);
+  const cantidad = parseInt(
+    document.getElementById(`edit-cantidad-${index}`).value
+  );
+  const precio = parseFloat(
+    document.getElementById(`edit-precio-${index}`).value
+  );
 
   if (!nombre || cantidad <= 0 || precio < 0) return;
 
@@ -88,42 +125,52 @@ function guardarEdicion(index) {
 
 function mostrarModalEliminar(index) {
   productoAEliminar = index;
-  deleteModal.style.display = 'block';
+  deleteModal.style.display = "block";
 }
 
-confirmDeleteBtn.addEventListener('click', () => {
+confirmDeleteBtn.addEventListener("click", () => {
   if (productoAEliminar !== null) {
     productos.splice(productoAEliminar, 1);
     productoAEliminar = null;
     renderizarTabla();
   }
-  deleteModal.style.display = 'none';
+  deleteModal.style.display = "none";
 });
 
-cancelDeleteBtn.addEventListener('click', () => {
+cancelDeleteBtn.addEventListener("click", () => {
   productoAEliminar = null;
-  deleteModal.style.display = 'none';
+  deleteModal.style.display = "none";
 });
 
 function exportarPDF() {
-  const cotizacion = document.getElementById('cotizacion');
+  const cotizacion = document.getElementById("cotizacion");
 
   const opciones = {
     margin: 0,
-    filename: 'cotizacion.pdf',
-    image: { type: 'jpeg', quality: 0.98 },
+    filename: "cotizacion.pdf",
+    image: { type: "jpeg", quality: 0.98 },
     html2canvas: { scale: 2 },
-    jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
+    jsPDF: { unit: "mm", format: "letter", orientation: "portrait" },
   };
 
   html2pdf().set(opciones).from(cotizacion).save();
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  const fechaHoy = document.getElementById('fecha-hoy');
+document.addEventListener("DOMContentLoaded", () => {
+  const fechaHoy = document.getElementById("fecha-hoy");
   const meses = [
-    'enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio',
-    'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'
+    "enero",
+    "febrero",
+    "marzo",
+    "abril",
+    "mayo",
+    "junio",
+    "julio",
+    "agosto",
+    "septiembre",
+    "octubre",
+    "noviembre",
+    "diciembre",
   ];
   const hoy = new Date();
   const dia = hoy.getDate();
