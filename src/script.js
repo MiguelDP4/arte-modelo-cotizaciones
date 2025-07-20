@@ -104,3 +104,17 @@ cancelDeleteBtn.addEventListener('click', () => {
   productoAEliminar = null;
   deleteModal.style.display = 'none';
 });
+
+function exportarPDF() {
+  const cotizacion = document.getElementById('cotizacion');
+
+  const opciones = {
+    margin: 0,
+    filename: 'cotizacion.pdf',
+    image: { type: 'jpeg', quality: 0.98 },
+    html2canvas: { scale: 2 },
+    jsPDF: { unit: 'mm', format: 'letter', orientation: 'portrait' }
+  };
+
+  html2pdf().set(opciones).from(cotizacion).save();
+}

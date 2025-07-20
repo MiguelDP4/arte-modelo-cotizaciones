@@ -3,16 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Cotizador</title>
-  <style>
-    table, th, td {
-      border: 1px solid black;
-      border-collapse: collapse;
-      padding: 6px;
-    }
-    th {
-      background-color: #f2f2f2;
-    }
-  </style>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <h1>Cotizainador</h1>
@@ -34,25 +25,29 @@
   </form>
 
   <h2>Productos agregados</h2>
-  <table id="product-table">
-    <thead>
-      <tr>
-        <th>Producto</th>
-        <th>Cantidad</th>
-        <th>Precio Unitario</th>
-        <th>Total</th>
-      </tr>
-    </thead>
-    <tbody>
-      <!-- Aquí se agregan los productos -->
-    </tbody>
-    <tfoot>
-      <tr>
-        <td colspan="3"><strong>Total cotización</strong></td>
-        <td id="grand-total">Q0.00</td>
-      </tr>
-    </tfoot>
-  </table>
+  <div id="cotizacion">
+    <table id="product-table">
+      <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th>Precio Unitario</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Aquí se agregan los productos -->
+      </tbody>
+      <tfoot>
+        <tr>
+          <td colspan="3"><strong>Total cotización</strong></td>
+          <td id="grand-total">Q0.00</td>
+        </tr>
+      </tfoot>
+    </table>
+    <button onclick="exportarPDF()">Exportar a PDF</button>
+  </div>
+
   <!-- Modal para confirmación de eliminación -->
   <div id="delete-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5);">
     <div style="background:white; padding:20px; margin:10% auto; width:300px; text-align:center; border-radius:8px;">
@@ -62,6 +57,7 @@
     </div>
   </div>
   <script src="script.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
 </body>
 </html>
