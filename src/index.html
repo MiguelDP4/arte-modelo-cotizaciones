@@ -1,18 +1,106 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cotizainador</title>
+  <meta charset="UTF-8">
+  <title>Cotizador</title>
+  <style>
+    table, th, td {
+      border: 1px solid black;
+      border-collapse: collapse;
+      padding: 6px;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
 </head>
 <body>
-    <h1>Cotizainador</h1>
-    <input type="text" id="nombre-producto" placeholder="Nombre del producto" />
-    <input type="number" id="cantidad" placeholder="Cantidad" />
-    <input type="number" id="precio" placeholder="Precio unitario" />
-    <button
-        id="agregar-producto"
-        onclick="agregarProducto()"
-    >Agregar Producto</button>
+  <h1>Cotizainador</h1>
+
+  <form id="product-form">
+    <label>
+      Producto:
+      <input type="text" id="product-name" required>
+    </label>
+    <label>
+      Cantidad:
+      <input type="number" id="product-qty" min="1" required>
+    </label>
+    <label>
+      Precio Unitario:
+      <input type="number" id="product-price" step="0.01" min="0" required>
+    </label>
+    <button type="submit">Agregar producto</button>
+  </form>
+
+  <h2>Productos agregados</h2>
+  <table id="product-table">
+    <thead>
+      <tr>
+        <th>Producto</th>
+        <th>Cantidad</th>
+        <th>Precio Unitario</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Aquí se agregan los productos -->
+    </tbody>
+    <tfoot>
+      <tr>
+        <td colspan="3"><strong>Total cotización</strong></td>
+        <td id="grand-total">Q0.00</td>
+      </tr>
+    </tfoot>
+  </table>
+
+  <script>
+    const form = document.getElementById('product-form');
+    const tableBody = document.querySelector('#product-table tbody');
+    const grandTotalCell = document.getElementById('grand-total');
+
+    let productos = [];
+
+    form.addEventListener('submit', function (event) {
+      event.preventDefault();
+
+      const nombre = document.getElementById('product-name').value.trim();
+      const cantidad = parseInt(document.getElementById('product-qty').value);
+      const precio = parseFloat(document.getElementById('product-price').value);
+
+      if (!nombre || cantidad <= 0 || precio < 0) return;
+
+      const total = cantidad * precio;
+
+      const producto = {
+        nombre,
+        cantidad,
+        precio,
+        total
+      };
+
+      productos.push(producto);
+      agregarFila(producto);
+      actualizarTotal();
+
+      form.reset();
+    });
+
+    function agregarFila(producto) {
+      const row = document.createElement('tr');
+      row.innerHTML = `
+        <td>${producto.nombre}</td>
+        <td>${producto.cantidad}</td>
+        <td>Q${producto.precio.toFixed(2)}</td>
+        <td>Q${producto.total.toFixed(2)}</td>
+      `;
+      tableBody.appendChild(row);
+    }
+
+    function actualizarTotal() {
+      const total = productos.reduce((sum, p) => sum + p.total, 0);
+      grandTotalCell.textContent = `Q${total.toFixed(2)}`;
+    }
+  </script>
 </body>
 </html>
